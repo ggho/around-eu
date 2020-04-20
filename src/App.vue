@@ -30,24 +30,33 @@
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
     </v-app-bar>
 
-    <v-content>
-      <Landing />
+    <v-content @goToListing="currentPage = 'LISTING'">
+      <template v-if="currentPage == 'LISTING'">
+        <ListingPage />
+      </template>
+      <template v-else>
+        <StartPage />
+      </template>
     </v-content>
   </v-app>
 </template>
 
 <script>
-import Landing from "./components/Landing";
+import StartPage from "./components/StartPage";
+
+import ListingPage from "./components/ListingPage";
 
 export default {
   name: "App",
 
   components: {
-    Landing
+    StartPage,
+    ListingPage
   },
 
   data: () => ({
     //
+    currentPage: "START",
 
     drawer: null
   })

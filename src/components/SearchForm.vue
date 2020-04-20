@@ -13,7 +13,7 @@
       </v-toolbar>
 
       <v-list>
-        <template v-for="(city, i) in searchResults">
+        <template v-for="(city, i) in locationSuggestions">
           <v-list-item :key="i" link>
             <v-list-item-icon>
               <v-icon v-text="city.icon"></v-icon>
@@ -80,7 +80,7 @@
           </v-row>
         </v-col>
 
-        <v-btn class="mt-6" color="primary">Primary</v-btn>
+        <v-btn class="mt-6" color="primary" @click="doSearch">Search</v-btn>
       </v-row>
     </v-container>
   </v-form>
@@ -89,7 +89,18 @@
 <script>
 export default {
   name: "SearchForm",
+  props: {
+    //
+  },
+  methods: {
+    doSearch: function() {
+      console.log(this.$store.state.currentPage);
+
+      this.$emit("goToListing");
+    }
+  },
   data: () => ({
+    drawer: null,
     singleOrReturn: "round",
     singleOrReturnItems: [
       {
@@ -101,8 +112,7 @@ export default {
         value: "one"
       }
     ],
-    drawer: null,
-    searchResults: [
+    locationSuggestions: [
       {
         icon: "place",
         text: "Stockholm, Sweden",
