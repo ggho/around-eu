@@ -8,6 +8,10 @@ export default new Vuex.Store({
     currentPage: 'START'
   },
   getters: {},
-  mutations: {},
+  mutations: {
+    changePage: (state, payload) => {
+      state.currentPage = payload.newPage;
+    },
+  },
   actions: {}
 });

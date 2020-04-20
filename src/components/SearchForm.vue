@@ -94,9 +94,9 @@ export default {
   },
   methods: {
     doSearch: function() {
-      console.log(this.$store.state.currentPage);
-
-      this.$emit("goToListing");
+      this.$store.commit("changePage", {
+        newPage: "LISTING"
+      });
     }
   },
   data: () => ({

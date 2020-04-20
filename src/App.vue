@@ -25,12 +25,24 @@
     </v-navigation-drawer>
 
     <v-app-bar app color="primary">
-      <v-toolbar-title>around.eu</v-toolbar-title>
-      <v-spacer />
-      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      <template v-if="currentPage == 'LISTING'">
+        <v-btn icon @click="backToStartPage">
+          <v-icon>arrow_back_ios</v-icon>
+        </v-btn>
+        <v-toolbar-title>Stockholm &lt;&gt; Hamburg</v-toolbar-title>
+        <v-spacer />
+        <v-btn icon @click="drawer = false">
+          <v-icon>search</v-icon>
+        </v-btn>
+      </template>
+      <template v-else>
+        <v-toolbar-title>around.eu</v-toolbar-title>
+        <v-spacer />
+        <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
+      </template>
     </v-app-bar>
 
-    <v-content @goToListing="currentPage = 'LISTING'">
+    <v-content>
       <template v-if="currentPage == 'LISTING'">
         <ListingPage />
       </template>
@@ -43,7 +55,6 @@
 
 <script>
 import StartPage from "./components/StartPage";
-
 import ListingPage from "./components/ListingPage";
 
 export default {
@@ -54,10 +65,26 @@ export default {
     ListingPage
   },
 
+  methods: {
+    backToStartPage: function() {
+      this.$store.commit("changePage", {
+        newPage: "START"
+      });
+    }
+  },
+
+  mounted: function() {
+    this.$store.subscribe(mutation => {
+      console.log(mutation);
+      if (mutation.type === "changePage") {
+        this.currentPage = mutation.payload.newPage;
+      }
+    });
+  },
+
   data: () => ({
     //
     currentPage: "START",
-
     drawer: null
   })
 };

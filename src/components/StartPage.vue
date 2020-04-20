@@ -27,12 +27,12 @@ export default {
     SearchForm
   },
 
-  data: () => ({
-    //
-  }),
-
   methods: {
     //
-  }
+  },
+
+  data: () => ({
+    //
+  })
 };
 </script>
