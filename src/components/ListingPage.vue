@@ -246,7 +246,7 @@ export default {
         timeTo: "00:25",
         timeToPlus1: true,
         duration: "12h04",
-        locationFrom: "Stockholm Centralstation",
+        locationFrom: "Stockholm Södra",
         locationTo: "Hamburg",
         transfers: 4,
         vehicle: "train",
@@ -256,32 +256,32 @@ export default {
         routeDetails: [
           {
             time: "12:21",
-            station: "Stokcholm Cityterminalen",
-            carrier: "Flixbus",
+            station: "Stokcholm Södra",
+            carrier: "SJ | X2 20533",
             duration: "8h55"
           },
           {
-            time: "0:00",
+            time: "17:00",
             timePlus1: true,
-            station: "København, Ingerslevsgade (Central Bus Station)",
+            station: "København, H",
             transferDuration: "1h30"
           },
           {
             time: "00:00",
-            station: "Stokcholm Cityterminalen",
+            station: "København H",
             carrier: "Flixbus",
             duration: "8h55"
           },
           {
             time: "6:05",
             timePlus1: true,
-            station: "København, Ingerslevsgade (Central Bus Station)",
+            station: "Kolding St.",
             transferDuration: "1h30"
           },
           {
             time: "7:35",
-            station: "København, Ingerslevsgade (Central Bus Station)",
-            carrier: "Flixbus",
+            station: "Neumünster",
+            carrier: "Deutsche Bahn | RE021",
             duration: "5h40"
           },
           {
@@ -327,6 +327,59 @@ export default {
           },
           {
             time: "13:15",
+            timePlus1: false,
+            station: "Hamburg, ZOB am Hbf",
+            transferDuration: ""
+          }
+        ]
+      },
+      {
+        most: "2ND CHEAPEST",
+        date: "Wed, 29 Apr",
+        timeFrom: "07:18",
+        timeTo: "18:02",
+        timeToPlus1: false,
+        duration: "10h44",
+        locationFrom: "Stockholm Södra",
+        locationTo: "Hamburg Hbf",
+        transfers: 2,
+        vehicle: "train",
+        price: "120",
+        co2: "27",
+        showDetails: false,
+        routeDetails: [
+          {
+            time: "7:18",
+            station: "Stokcholm Södra",
+            carrier: "SJ | X2 20533",
+            duration: "8h55"
+          },
+          {
+            time: "12:07",
+            timePlus1: true,
+            station: "København, H",
+            transferDuration: "1h30"
+          },
+          {
+            time: "12:32",
+            station: "København H",
+            carrier: "Flixbus",
+            duration: "8h55"
+          },
+          {
+            time: "14:38",
+            timePlus1: true,
+            station: "Kolding St.",
+            transferDuration: "1h30"
+          },
+          {
+            time: "14:45",
+            station: "Neumünster",
+            carrier: "Deutsche Bahn | RE021",
+            duration: "5h40"
+          },
+          {
+            time: "18:02",
             timePlus1: false,
             station: "Hamburg, ZOB am Hbf",
             transferDuration: ""
