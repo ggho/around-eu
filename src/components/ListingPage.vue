@@ -20,7 +20,7 @@
               >{{item.date + " " + item.timeFrom}}</span>
               <span>&#32;—&#32;</span>
 
-              <span v-text="item.timeTo" class="font-weight-bold" style="font-size: 1.4em;"></span>
+              <span v-text="item.timeTo" class="font-weight-bold" style="font-size: 1.2em;"></span>
               <span v-show="item.timeToPlus1" style="font-size:0.8em">+1</span>
             </div>
             <div class="d-flex justify-space-between">
@@ -100,7 +100,7 @@
             class="mt-3 pb-3"
             v-for="(item, i) in routeListing"
             :key="i"
-            @click="chooseRoute(i)"
+            @click.stop="chooseRoute(i)"
           >
             <v-container>
               <div class="d-flex justify-space-between">
@@ -122,7 +122,7 @@
               </div>
               <div>{{item.locationFrom}} - {{item.locationTo}}</div>
               <div class="d-flex justify-space-between">
-                <div @click="item.showDetails = !item.showDetails">
+                <div @click.stop="item.showDetails = !item.showDetails">
                   <v-icon>{{item.vehicle}}</v-icon>
                   <span class="ml-1">{{item.transfers}}</span>
                   <span class="ml-1">Transfer</span>
@@ -153,7 +153,10 @@
                 </v-row>
 
                 <v-row justify="center" class="mt-8">
-                  <v-btn color="primary" @click="chooseRoute(i)">Choose this journey €{{item.price}}</v-btn>
+                  <v-btn
+                    color="primary"
+                    @click.stop="chooseRoute(i)"
+                  >Choose this journey €{{item.price}}</v-btn>
                   <div class="mt-2">166kg less CO2 compared to flying</div>
                 </v-row>
               </div>
@@ -175,40 +178,53 @@ export default {
   components: {
     // SearchForm
   },
+  mounted: function() {
+    this.$store.subscribe(mutation => {
+      if (
+        mutation.type === "changePage" &&
+        (mutation.payload.page === "LISTING-0" ||
+          mutation.payload.page === "LISTING-1" ||
+          mutation.payload.page === "LISTING-2")
+      ) {
+        if (mutation.payload.chosenIdx) {
+          this.chosenIndexes = mutation.payload.chosenIdx;
+        }
+      }
+    });
+  },
 
   methods: {
     chooseRoute: function(x) {
       for (let i = 0; i < this.routeListing.length; i++) {
         this.routeListing[i].showDetails = false;
       }
-      if (this.chosenOutboundRouteIdx !== undefined) {
-        this.chosenInboundRouteIdx = x;
-      } else {
-        this.chosenOutboundRouteIdx = x;
+
+      if (this.chosenIndexes.length >= 2) {
+        return;
       }
+      this.chosenIndexes.push(x);
+
+      this.$store.commit("changePage", {
+        page: "LISTING-" + this.chosenIndexes.length,
+        chosenIdx: this.chosenIndexes
+      });
     }
   },
 
   computed: {
     chosenRoutes: function() {
-      if (
-        this.chosenOutboundRouteIdx === undefined &&
-        this.chosenInboundRouteIdx == undefined
-      ) {
-        return [];
-      }
-
-      const routes = [];
-      if (this.chosenOutboundRouteIdx !== undefined) {
-        routes.push(this.outboundRoutes[this.chosenOutboundRouteIdx]);
-      }
-      if (this.chosenInboundRouteIdx !== undefined) {
-        routes.push(this.inboundRoutes[this.chosenInboundRouteIdx]);
-      }
-      return routes;
+      return this.chosenIndexes.map((chosen, i) => {
+        //
+        if (i === 0) {
+          return this.outboundRoutes[chosen];
+        }
+        if (i === 1) {
+          return this.inboundRoutes[chosen];
+        }
+      });
     },
     routeListing: function() {
-      return this.chosenOutboundRouteIdx === undefined
+      return this.chosenIndexes.length === 0
         ? this.outboundRoutes
         : this.inboundRoutes;
     },
@@ -221,8 +237,7 @@ export default {
 
   data: () => ({
     //
-    chosenOutboundRouteIdx: undefined,
-    chosenInboundRouteIdx: undefined,
+    chosenIndexes: [],
     outboundRoutes: [
       {
         most: "Fastest, 2nd Cheapest",

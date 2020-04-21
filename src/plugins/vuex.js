@@ -5,7 +5,9 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    currentPage: 'START',
+    pageHistory: [{
+      page: 'START'
+    }],
     locationFrom: '',
     locationTo: '',
     dateFrom: '',
@@ -14,14 +16,27 @@ export default new Vuex.Store({
   getters: {},
   mutations: {
     changePage: (state, payload) => {
-      state.currentPage = payload.newPage;
+      state.pageHistory.push(payload);
     },
     saveUserInputs: (state, payload) => {
       state.locationFrom = payload.locationFrom;
       state.locationTo = payload.locationTo;
       state.dateFrom = payload.dateFrom;
       state.dateTo = payload.dateTo;
+    },
+    popPage: (state) => {
+      state.pageHistory.pop();
     }
   },
-  actions: {}
+  actions: {
+    previousPage: (context) => {
+      const state = context.state;
+      const lastPage = state.pageHistory[state.pageHistory.length - 2];
+      context.commit('popPage');
+      context.commit('popPage');
+
+      context.commit('changePage', lastPage);
+
+    },
+  }
 });

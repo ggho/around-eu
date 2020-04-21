@@ -141,7 +141,8 @@ export default {
       });
 
       this.$store.commit("changePage", {
-        newPage: "LISTING"
+        page: "LISTING-0",
+        chosenIdx: []
       });
     }
   },

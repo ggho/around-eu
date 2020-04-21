@@ -25,8 +25,8 @@
     </v-navigation-drawer>
 
     <v-app-bar app color="primary">
-      <template v-if="currentPage == 'LISTING'">
-        <v-btn icon @click="backToStartPage">
+      <template v-if="currentPage !== 'START'">
+        <v-btn icon @click="previousPage">
           <v-icon>arrow_back_ios</v-icon>
         </v-btn>
         <v-toolbar-title>Stockholm &lt;&gt; Hamburg</v-toolbar-title>
@@ -43,7 +43,7 @@
     </v-app-bar>
 
     <v-content>
-      <template v-if="currentPage == 'LISTING'">
+      <template v-if="currentPage != 'START'">
         <ListingPage />
       </template>
       <template v-else>
@@ -66,24 +66,20 @@ export default {
   },
 
   methods: {
-    backToStartPage: function() {
-      this.$store.commit("changePage", {
-        newPage: "START"
-      });
+    previousPage: function() {
+      this.$store.dispatch("previousPage");
     }
   },
 
   mounted: function() {
     this.$store.subscribe(mutation => {
-      console.log(mutation);
       if (mutation.type === "changePage") {
-        this.currentPage = mutation.payload.newPage;
+        this.currentPage = mutation.payload.page;
       }
     });
   },
 
   data: () => ({
-    //
     currentPage: "START",
     drawer: null
   })
